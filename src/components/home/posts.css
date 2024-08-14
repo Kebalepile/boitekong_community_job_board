@@ -44,8 +44,6 @@
   margin-bottom: 20px;
 }
 
-
-
 /* Company Logo Styles */
 .company-logo img {
   max-width: 80%;
@@ -76,7 +74,7 @@
   align-items: center;
   border-radius: 3px;
   position: relative; /* To position the "Read More" button */
-  cursor:pointer;
+  cursor: pointer;
 }
 .details {
   text-align: left;
@@ -111,7 +109,7 @@
 
 /* apply button style */
 /* .btn.btn-primary, */
-.apply{
+.apply {
   display: block;
   margin: auto;
   background-color: #20b65e; /* Blue background */
@@ -122,14 +120,14 @@
   cursor: pointer;
   text-align: center;
   text-decoration: none;
-  width:50px;
+  width: 50px;
 }
-.apply:hover{
+.apply:hover {
   background-color: #00b36e; /* Darker blue on hover */
 }
 
 /* original source button */
-.source-btn{
+.source-btn {
   display: block;
   margin: auto;
   background-color: #af7801; /* Blue background */
@@ -140,7 +138,7 @@
   cursor: pointer;
   text-align: center;
   text-decoration: none;
-  width:110px;
+  width: 110px;
 }
 .source-btn:hover {
   background-color: #696b08; /* Darker blue on hover */

@@ -1,13 +1,38 @@
+/**
+ * Scrolls the element specified by the selector into view.
+ *
+ * @description This function scrolls the page to bring the element matching the given CSS selector into view with the specified scrolling behavior. It also focuses on the element once it's in view.
+ *
+ * @param {string} selector - The CSS selector of the element to scroll into view.
+ * @param {string} [behaviour="smooth"] - The scroll behavior, which can be "auto" or "smooth". Defaults to "smooth".
+ */
 export function scrollIntoView(selector, behaviour = "smooth") {
   const elem = document.querySelector(selector);
   elem.scrollIntoView({ behaviour });
   elem.focus();
 }
 
+/**
+ * Toggles a class on an element based on a boolean value.
+ *
+ * @description This function adds or removes a CSS class from the given element based on the boolean value. If the boolean is `true`, the class is added; if `false`, the class is removed.
+ *
+ * @param {boolean} bool - The boolean value that determines whether to add or remove the class.
+ * @param {Element} elem - The DOM element to which the class will be toggled.
+ * @param {string} className - The name of the CSS class to add or remove.
+ */
 export function toggleClass(bool, elem, className) {
   bool ? elem.classList.add(className) : elem.classList.remove(className);
 }
 
+/**
+ * Generates a random alphanumeric ID of a specified length.
+ *
+ * @description This function generates a random string of alphanumeric characters with the specified length using cryptographic randomness. It is useful for creating unique identifiers.
+ *
+ * @param {number} [length=10] - The length of the generated ID. Defaults to 10 if not provided.
+ * @returns {string} The generated random ID.
+ */
 export function generateRandomId(length = 10) {
   const characters =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -24,13 +49,15 @@ export function generateRandomId(length = 10) {
 
   return randomId;
 }
-/**
- * @description format given array of strings by replacing certain 
- * charecter with desireed HTML elements
- * @param {array} contentArray 
- * @returns string || empty string
- */
 
+/**
+ * Formats an array of strings by replacing certain characters with HTML elements.
+ *
+ * @description This function processes an array of strings and replaces periods with `<br/>` and double newlines with `</p><p>` to create formatted HTML content. It returns a single string containing the formatted HTML.
+ *
+ * @param {string[]} contentArray - An array of strings to be formatted.
+ * @returns {string} The formatted HTML string, or an empty string if the input is not a valid array or is empty.
+ */
 export const formatDetails = contentArray => {
   // Check if contentArray is an array and not empty
   if (Array.isArray(contentArray) && contentArray.length > 0) {

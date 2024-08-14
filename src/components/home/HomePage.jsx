@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import PDFViewerIframe from '../pdf/PDFViewerIframe'
-import Pagination from '../pagination/Pagination' 
+import PdfPosts from '../pdf/PdfPosts'
+import Pagination from '../pagination/Pagination'
 import useLoadingPlaceholder from '../../hooks/useLoadingPlaceholder'
 import useRenderPosts from "../../hooks/useRenderPost"
 import { formatDetails } from "../../utils/functions"
@@ -144,20 +144,11 @@ export default function HomePage() {
   )
 }
 
+/**
+ * @description Acts as a wrapper method of useRenderPosts hook
+ * @param {object} param
+ * @returns Post element card with summrized info
+ */
 function PostItem({ post, onPostClick }) {
   return useRenderPosts([post], onPostClick)
-}
-
-function PdfPosts({ pdfFile, isLoaded }) {
-  return (
-    <section id='pdf-posts'>
-      {isLoaded ? (
-        <div className='pdf-container'>
-          <PDFViewerIframe file={pdfFile} />
-        </div>
-      ) : (
-        <div className='placeholder pdf-container-placeholder'></div>
-      )}
-    </section>
-  )
 }
