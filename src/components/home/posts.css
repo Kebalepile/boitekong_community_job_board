@@ -107,12 +107,13 @@
   text-overflow: ellipsis; /* Add ellipsis for overflowing text */
   padding: 10px; /* Optional padding for better spacing */
   text-align: left;
+  font-size: 13px;
 }
 
 /* Read More Button Styles */
 .read-more-button {
   display: block;
-  margin-top: 10px;
+  margin: 10px;
   background-color: #007bff; /* Blue background */
   color: white; /* White text */
   border: none;
@@ -125,3 +126,4 @@
 .read-more-button:hover {
   background-color: #0056b3; /* Darker blue on hover */
 }
+

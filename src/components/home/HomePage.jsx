@@ -185,6 +185,7 @@ function renderPosts (posts, onClick) {
               className='summary'
               dangerouslySetInnerHTML={{ __html: p?.details || p?.content }}
             />
+            <button className="read-more-button"  onClick={() => onClick(p)}>read more</button>
           </article>
         ))}
       </section>
