@@ -127,3 +127,39 @@
   background-color: #0056b3; /* Darker blue on hover */
 }
 
+/* apply button style */
+/* .btn.btn-primary, */
+.apply{
+  display: block;
+  margin: auto;
+  background-color: #20b65e; /* Blue background */
+  color: white; /* White text */
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  width:50px;
+}
+.apply:hover{
+  background-color: #00b36e; /* Darker blue on hover */
+}
+
+/* original source button */
+.source-btn{
+  display: block;
+  margin: auto;
+  background-color: #af7801; /* Blue background */
+  color: white; /* White text */
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  width:110px;
+}
+.source-btn:hover {
+  background-color: #696b08; /* Darker blue on hover */
+}

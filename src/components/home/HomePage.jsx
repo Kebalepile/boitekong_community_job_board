@@ -109,6 +109,26 @@ export default function HomePage () {
                     : formatDetails(selectedPost?.content || '')
                 }}
               />
+              {selectedPost.apply && (
+                <a
+                  href={selectedPost?.apply}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='apply'
+                >
+                  Apply
+                </a>
+              )}
+              {selectedPost.href && (
+                <a
+                  href={selectedPost?.href}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='source-btn'
+                >
+                  Original Source
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -185,7 +205,9 @@ function renderPosts (posts, onClick) {
               className='summary'
               dangerouslySetInnerHTML={{ __html: p?.details || p?.content }}
             />
-            <button className="read-more-button"  onClick={() => onClick(p)}>read more</button>
+            <button className='read-more-button' onClick={() => onClick(p)}>
+              read more
+            </button>
           </article>
         ))}
       </section>
