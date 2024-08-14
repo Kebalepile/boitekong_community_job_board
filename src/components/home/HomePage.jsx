@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import PDFViewerIframe from '../pdf/PDFViewerIframe'
 import useLoadingPlaceholder from '../../hooks/useLoadingPlaceholder'
+import useRenderPosts from "../../hooks/useRenderPost"
+import {formatDetails} from "../../utils/functions"
 import pdfUrls from '../../assets/pdfs/pdfUrls.json'
 import minopexData from '../../assets/private/minopex.json'
 import sayouthData from '../../assets/private/SA-Youth.json'
@@ -18,6 +20,7 @@ export default function HomePage () {
   const [currentPage, setCurrentPage] = useState(0)
   const [isPdfContainerLoaded] = useLoadingPlaceholder(5000)
   const [selectedPost, setSelectedPost] = useState(null)
+
   useEffect(() => {
     // Check if the modal is visible
     if (selectedPost) {
@@ -146,40 +149,25 @@ export default function HomePage () {
   )
 }
 
-const formatDetails = contentArray => {
-  // Check if contentArray is an array and not empty
-  if (Array.isArray(contentArray) && contentArray.length > 0) {
-    // Join the array items into a single string with appropriate HTML tags
-    return contentArray
-      .map(item => {
-        // Replace periods with <br/>
-        const formattedItem = item.replace(/\./g, '.<br/><br/>')
 
-        // Replace newlines with paragraph breaks
-        return formattedItem.replace(/\n\n/g, '</p><p>')
-      })
-      .join('') // Join all formatted strings into a single HTML string
-  }
-  return '' // Return an empty string if contentArray is not valid
-}
 
 function MinoPexPosts ({ onPostClick }) {
   const posts = minopexData.blogPosts
-  return renderPosts(posts, onPostClick)
+  return useRenderPosts(posts, onPostClick)
 }
 
 function SaYouthPosts ({ onPostClick }) {
   const posts = sayouthData.blogPosts
-  return renderPosts(posts, onPostClick)
+  return useRenderPosts(posts, onPostClick)
 }
 
 function ProPersonnelPosts ({ onPostClick }) {
   const posts = propersonnelData.blogPosts
-  return renderPosts(posts, onPostClick)
+  return useRenderPosts(posts, onPostClick)
 }
 
 function GovPagePosts ({ data, onPostClick }) {
-  return renderPosts(data, onPostClick)
+  return useRenderPosts(data, onPostClick)
 }
 
 function PdfPosts ({ pdfFiles, isLoaded, currentPage }) {
@@ -196,31 +184,4 @@ function PdfPosts ({ pdfFiles, isLoaded, currentPage }) {
   )
 }
 
-function renderPosts (posts, onClick) {
-  if (posts.length) {
-    return (
-      <section>
-        {posts.map((p, i) => (
-          <article className='job-post' key={i} onClick={() => onClick(p)}>
-            <div className='company-logo'>
-              <img
-                loading='lazy'
-                src={p.imgSrc || p.iconLink}
-                alt='company logo'
-              />
-            </div>
-            <p className='title'>{p?.title || p?.jobTitle}</p>
-            <div
-              className='summary'
-              dangerouslySetInnerHTML={{ __html: p?.details || p?.content }}
-            />
-            <button className='read-more-button' onClick={() => onClick(p)}>
-              read more
-            </button>
-          </article>
-        ))}
-      </section>
-    )
-  }
-  return <></>
-}
+
