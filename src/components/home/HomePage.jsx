@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PDFViewerIframe from '../pdf/PDFViewerIframe'
 import useLoadingPlaceholder from '../../hooks/useLoadingPlaceholder'
 import pdfUrls from '../../assets/pdfs/pdfUrls.json'
@@ -18,6 +18,15 @@ export default function HomePage () {
   const [currentPage, setCurrentPage] = useState(0)
   const [isPdfContainerLoaded] = useLoadingPlaceholder(5000)
   const [selectedPost, setSelectedPost] = useState(null)
+  useEffect(() => {
+    // Check if the modal is visible
+    if (selectedPost) {
+      const applyLink = document.querySelector('.modal a.btn.btn-primary');
+      if (applyLink) {
+        applyLink.remove(); // Remove the apply link
+      }
+    }
+  }, [selectedPost]); // Run this effect whenever selectedPost changes
 
   // All data combined for pagination calculation
   const allData = [
