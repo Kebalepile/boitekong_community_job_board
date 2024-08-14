@@ -44,25 +44,7 @@
   margin-bottom: 20px;
 }
 
-/* Pagination Styles */
-.pagination {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px 0;
-}
 
-.pagination button {
-  padding: 5px 10px;
-  cursor: pointer;
-  background-color: #007bff; /* Blue background */
-  color: white; /* White text */
-  border: none;
-  border-radius: 4px;
-}
-
-.pagination button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-}
 
 /* Company Logo Styles */
 .company-logo img {
