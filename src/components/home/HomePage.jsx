@@ -31,18 +31,25 @@ export default function HomePage () {
     }
   }, [selectedPost]); // Run this effect whenever selectedPost changes
 
-  // All data combined for pagination calculation
+  // All data combined for pagination
   const allData = [
-    ...pdfUrls.pdfUrls,
-    ...minopexData.blogPosts,
-    ...sayouthData.blogPosts,
-    ...propersonnelData.blogPosts,
-    ...govPagePublicData.blogPosts,
-    ...govPagePrivateData.blogPosts
+    ...pdfUrls.pdfUrls.map((pdfUrl, index) => ({
+      type: 'pdf',
+      id: `pdf-${index}`,
+      url: pdfUrl
+    })),
+    ...minopexData.blogPosts.map((post, index) => ({...post, type: 'post', id: `minopex-${index}`})),
+    ...sayouthData.blogPosts.map((post, index) => ({...post, type: 'post', id: `sayouth-${index}`})),
+    ...propersonnelData.blogPosts.map((post, index) => ({...post, type: 'post', id: `propersonnel-${index}`})),
+    ...govPagePublicData.blogPosts.map((post, index) => ({...post, type: 'post', id: `govpublic-${index}`})),
+    ...govPagePrivateData.blogPosts.map((post, index) => ({...post, type: 'post', id: `govprivate-${index}`}))
   ]
 
-  // Total pages based on maximum length of data arrays
+  // Total pages based on combined data
   const totalPages = Math.ceil(allData.length / POSTS_PER_PAGE)
+
+  // Get the posts for the current page
+  const paginatedData = allData.slice(currentPage * POSTS_PER_PAGE, (currentPage + 1) * POSTS_PER_PAGE)
 
   // Pagination logic
   const handlePrevClick = () => {
@@ -67,23 +74,26 @@ export default function HomePage () {
 
   return (
     <div>
-      <PdfPosts
-        pdfFiles={pdfUrls.pdfUrls}
-        isLoaded={isPdfContainerLoaded}
-        currentPage={currentPage}
-      />
-      <MinoPexPosts onPostClick={handlePostClick} />
-      <GovPagePosts
-        data={govPagePublicData.blogPosts}
-        onPostClick={handlePostClick}
-      />
+      {paginatedData.map(item => {
+        if (item.type === 'pdf') {
+          return (
+            <PdfPosts
+              key={item.id}
+              pdfFile={item.url}
+              isLoaded={isPdfContainerLoaded}
+            />
+          )
+        } else {
+          return (
+            <PostItem
+              key={item.id}
+              post={item}
+              onPostClick={handlePostClick}
+            />
+          )
+        }
+      })}
 
-      <SaYouthPosts onPostClick={handlePostClick} />
-      <GovPagePosts
-        data={govPagePrivateData.blogPosts}
-        onPostClick={handlePostClick}
-      />
-      <ProPersonnelPosts onPostClick={handlePostClick} />
       <div className='pagination'>
         <button onClick={handlePrevClick} disabled={currentPage === 0}>
           Previous
@@ -149,33 +159,16 @@ export default function HomePage () {
   )
 }
 
-
-
-function MinoPexPosts ({ onPostClick }) {
-  const posts = minopexData.blogPosts
-  return useRenderPosts(posts, onPostClick)
+function PostItem({ post, onPostClick }) {
+  return useRenderPosts([post], onPostClick)
 }
 
-function SaYouthPosts ({ onPostClick }) {
-  const posts = sayouthData.blogPosts
-  return useRenderPosts(posts, onPostClick)
-}
-
-function ProPersonnelPosts ({ onPostClick }) {
-  const posts = propersonnelData.blogPosts
-  return useRenderPosts(posts, onPostClick)
-}
-
-function GovPagePosts ({ data, onPostClick }) {
-  return useRenderPosts(data, onPostClick)
-}
-
-function PdfPosts ({ pdfFiles, isLoaded, currentPage }) {
+function PdfPosts ({ pdfFile, isLoaded }) {
   return (
     <section id='pdf-posts'>
       {isLoaded ? (
         <div className='pdf-container'>
-          <PDFViewerIframe file={pdfFiles[currentPage]} />
+          <PDFViewerIframe file={pdfFile} />
         </div>
       ) : (
         <div className='placeholder pdf-container-placeholder'></div>
@@ -183,5 +176,3 @@ function PdfPosts ({ pdfFiles, isLoaded, currentPage }) {
     </section>
   )
 }
-
-
