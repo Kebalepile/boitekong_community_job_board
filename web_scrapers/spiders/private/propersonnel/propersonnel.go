@@ -61,7 +61,7 @@ func (s *Spider) Launch(wg *sync.WaitGroup) {
 	s.error(err)
 
 	// pipeline.DowloadIcon(s.Posts.IconLink, s.Name, ".jpg")
-	s.Posts.IconLink = fmt.Sprintf("agency_icons/%s.jpg", s.Name)
+	s.Posts.IconLink = fmt.Sprintf("/assets/agency_icons/%s.jpg", s.Name)
 
 	if n := len(nodes); n > 0 {
 		var href string

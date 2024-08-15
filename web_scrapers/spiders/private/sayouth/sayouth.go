@@ -153,7 +153,7 @@ func (s *Spider) jobPosts(ctx context.Context) {
 	s.error(err)
 
 	// pipeline.DowloadIcon(s.Posts.IconLink, s.Name, ".png")
-	s.Posts.IconLink = fmt.Sprintf("agency_icons/%s.png", s.Name)
+	s.Posts.IconLink = fmt.Sprintf("/assets/agency_icons/%s.png", s.Name)
 	log.Println(s.Name, " loading site")
 
 	// once in the search page code below clikcs the search button & a list of job posts should appear.

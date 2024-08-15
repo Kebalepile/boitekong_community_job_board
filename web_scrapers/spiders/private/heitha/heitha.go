@@ -66,7 +66,7 @@ func (s *Spider) Launch(wg *sync.WaitGroup) {
 
 	// pipeline.DowloadIcon(s.Posts.IconLink, s.Name, ".png")
 
-	s.Posts.IconLink = fmt.Sprintf("agency_icons/%s.png", s.Name)
+	s.Posts.IconLink = fmt.Sprintf("/assets/agency_icons/%s.png", s.Name)
 
 	if n := strings.Compare(url, s.AllowedDomains[1]); n == 0 {
 		log.Println("Searching for latest vacancies ", s.Name)

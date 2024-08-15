@@ -62,7 +62,7 @@ func (s *Spider) Launch(wg *sync.WaitGroup) {
 
 	// pipeline.DowloadIcon(s.Posts.IconLink, s.Name, ".png")
 
-	s.Posts.IconLink = fmt.Sprintf("agency_icons/%s.png", s.Name)
+	s.Posts.IconLink = fmt.Sprintf("/assets/agency_icons/%s.png", s.Name)
 
 	s.vacancies(ctx, url)
 }

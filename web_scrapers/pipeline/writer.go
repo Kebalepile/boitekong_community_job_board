@@ -71,7 +71,7 @@ func HeithaJsonFile(data *types.HeithaJobs) error {
 func HeithaFile(data *types.HeithaJobs) error {
 
 	buffer := &bytes.Buffer{}
-	buffer.WriteString("export const data = ")
+	// buffer.WriteString("export const data = ")
 
 	encoder := json.NewEncoder(buffer)
 	encoder.SetEscapeHTML(false)
