@@ -1,19 +1,18 @@
 /* Container for the PDF viewer */
 .pdf-viewer-container {
   height: inherit;
-
-  margin: auto;
-
+  /* margin: 20px auto; */
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-rows: auto 1fr auto;
   grid-template-areas: "p p b" "p p p" "p p p";
 }
 .pdf-viewer-container-placeholder {
-  margin: auto;
+ 
   margin: 20px auto;
   width: 300px;
-  height: 500px;
+  height:inherit;
+  max-height: 500px;
 }
 
 /* Placeholder Styling for Loading State */
@@ -28,7 +27,6 @@
 .pdf-viewer-iframe {
   grid-area: p;
   width: inherit;
-
   height: inherit;
   border: none;
 }
@@ -55,7 +53,6 @@
   align-self: start;
   justify-self: end;
   padding: 5px 10px;
-  z-index: 1001;
   cursor: pointer;
   background-color: #00a2ff;
   color: #fff;
@@ -64,6 +61,15 @@
   height: 40px;
   width: 120px;
 }
+
+.full-view .toggle-view-btn {
+  z-index: 999; /* Adjust the z-index for the full-view mode */
+}
+
+.min-view  .toggle-view-btn{
+  z-index: 999; /* Higher z-index for minimized view */
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
