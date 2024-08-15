@@ -1,11 +1,11 @@
-/* General Menu Styling */
+
 .menu {
   display: grid;
-  grid-template-columns: auto 1fr auto; /* Define three columns: left, center, right */
-  align-items: center; /* Vertically center the items */
-  background-color: #ffffff; /* Smoky dirty white */
+  grid-template-columns: auto 1fr auto; 
+  align-items: center;
+  background-color: #ffffff;
   padding: 10px;
-  width: 100vw; /* Full viewport width */
+  width: 100vw;
   position: relative; /* To position the dropdown menu */
 }
 

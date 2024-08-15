@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import PdfPosts from '../pdf/PdfPosts'
 import Pagination from '../pagination/Pagination'
 import useLoadingPlaceholder from '../../hooks/useLoadingPlaceholder'
-import useRenderPosts from "../../hooks/useRenderPost"
-import { formatDetails } from "../../utils/functions"
+import useRenderPosts from '../../hooks/useRenderPost'
+import { formatDetails, combineAllData } from '../../utils/functions'
 
 // dynamic data
 import pdfUrls from '../../assets/pdfs/pdfUrls.json'
@@ -19,7 +19,7 @@ import './posts.css'
 // Constants
 const POSTS_PER_PAGE = 6
 
-export default function HomePage() {
+export default function HomePage () {
   const [currentPage, setCurrentPage] = useState(1)
   const [isPdfContainerLoaded] = useLoadingPlaceholder(5000)
   const [selectedPost, setSelectedPost] = useState(null)
@@ -35,26 +35,25 @@ export default function HomePage() {
   }, [selectedPost])
 
   // All data combined for pagination
-  const allData = [
-    ...pdfUrls.pdfUrls.map((pdfUrl, index) => ({
-      type: 'pdf',
-      id: `pdf-${index}`,
-      url: pdfUrl,
-    })),
-    ...minopexData.blogPosts.map((post, index) => ({ ...post, type: 'post', id: `minopex-${index}` })),
-    ...sayouthData.blogPosts.map((post, index) => ({ ...post, type: 'post', id: `sayouth-${index}` })),
-    ...propersonnelData.blogPosts.map((post, index) => ({ ...post, type: 'post', id: `propersonnel-${index}` })),
-    ...govPagePublicData.blogPosts.map((post, index) => ({ ...post, type: 'post', id: `govpublic-${index}` })),
-    ...govPagePrivateData.blogPosts.map((post, index) => ({ ...post, type: 'post', id: `govprivate-${index}` })),
-  ]
+  const allData = combineAllData(
+    pdfUrls,
+    minopexData,
+    sayouthData,
+    propersonnelData,
+    govPagePublicData,
+    govPagePrivateData
+  )
 
   // Total pages based on combined data
   const totalPages = Math.ceil(allData.length / POSTS_PER_PAGE)
 
   // Get the posts for the current page
-  const paginatedData = allData.slice((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE)
+  const paginatedData = allData.slice(
+    (currentPage - 1) * POSTS_PER_PAGE,
+    currentPage * POSTS_PER_PAGE
+  )
 
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = pageNumber => {
     setCurrentPage(pageNumber)
   }
 
@@ -67,7 +66,7 @@ export default function HomePage() {
   }
 
   return (
-    <div id="posts">
+    <div id='posts'>
       {paginatedData.map(item => {
         if (item.type === 'pdf') {
           return (
@@ -79,11 +78,7 @@ export default function HomePage() {
           )
         } else {
           return (
-            <PostItem
-              key={item.id}
-              post={item}
-              onPostClick={handlePostClick}
-            />
+            <PostItem key={item.id} post={item} onPostClick={handlePostClick} />
           )
         }
       })}
@@ -149,6 +144,6 @@ export default function HomePage() {
  * @param {object} param
  * @returns Post element card with summrized info
  */
-function PostItem({ post, onPostClick }) {
+function PostItem ({ post, onPostClick }) {
   return useRenderPosts([post], onPostClick)
 }

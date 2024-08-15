@@ -74,3 +74,72 @@ export const formatDetails = contentArray => {
   }
   return ""; // Return an empty string if contentArray is not valid
 };
+
+ /**
+* Combines and processes multiple data sources into a single array.
+*
+* @description This method checks each data source to ensure it contains data before mapping over it.
+* It then combines all the valid mapped data into a single array. The method supports different types of data,
+* including PDF URLs and blog posts from multiple sources, and assigns a unique `type` and `id` to each item.
+*
+* @param {Object} pdfUrls - An object containing an array of PDF URLs.
+* @param {Object} minopexData - An object containing an array of blog posts from the Minopex source.
+* @param {Object} sayouthData - An object containing an array of blog posts from the SA Youth source.
+* @param {Object} propersonnelData - An object containing an array of blog posts from the Pro Personnel source.
+* @param {Object} govPagePublicData - An object containing an array of blog posts from the Government Public source.
+* @param {Object} govPagePrivateData - An object containing an array of blog posts from the Government Private source.
+*
+* @returns {Array} A combined array of data objects, each with a `type` and `id` property, 
+* representing either a PDF or a blog post from various sources.
+*/
+export function combineAllData(pdfUrls, minopexData, sayouthData, propersonnelData, govPagePublicData, govPagePrivateData) {
+ return [
+   ...(pdfUrls.pdfUrls.length > 0
+     ? pdfUrls.pdfUrls.map((pdfUrl, index) => ({
+         type: 'pdf',
+         id: `pdf-${index}`,
+         url: pdfUrl,
+       }))
+     : []),
+
+   ...(minopexData.blogPosts.length > 0
+     ? minopexData.blogPosts.map((post, index) => ({
+         ...post,
+         type: 'post',
+         id: `minopex-${index}`,
+       }))
+     : []),
+
+   ...(sayouthData.blogPosts.length > 0
+     ? sayouthData.blogPosts.map((post, index) => ({
+         ...post,
+         type: 'post',
+         id: `sayouth-${index}`,
+       }))
+     : []),
+
+   ...(propersonnelData.blogPosts.length > 0
+     ? propersonnelData.blogPosts.map((post, index) => ({
+         ...post,
+         type: 'post',
+         id: `propersonnel-${index}`,
+       }))
+     : []),
+
+   ...(govPagePublicData.blogPosts.length > 0
+     ? govPagePublicData.blogPosts.map((post, index) => ({
+         ...post,
+         type: 'post',
+         id: `govpublic-${index}`,
+       }))
+     : []),
+
+   ...(govPagePrivateData.blogPosts.length > 0
+     ? govPagePrivateData.blogPosts.map((post, index) => ({
+         ...post,
+         type: 'post',
+         id: `govprivate-${index}`,
+       }))
+     : []),
+ ];
+}
