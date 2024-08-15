@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { BiMenuAltLeft } from 'react-icons/bi';
-import { FaHome, FaEnvelope, FaSignInAlt } from 'react-icons/fa';
-import { scrollIntoView } from '../../utils/functions';
-import useLoadingPlaceholder from '../../hooks/useLoadingPlaceholder';
-import './navigation.css';
+import React, { useState, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { BiMenuAltLeft } from 'react-icons/bi'
+import { FaHome, FaEnvelope, FaSignInAlt, FaBriefcase } from 'react-icons/fa'
+import { scrollIntoView } from '../../utils/functions'
+import useLoadingPlaceholder from '../../hooks/useLoadingPlaceholder'
+import './navigation.css'
 
 /**
  * @description
- * 
- * 
+ *
+ *
  * Nav Component
  *
  * This functional component renders the navigation bar for the application, which includes:
@@ -35,50 +35,51 @@ import './navigation.css';
  *
  * @returns {JSX.Element} The navigation bar component.
  */
-export default function Nav() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLogoLoaded] = useLoadingPlaceholder(1000);
-  const [isMenuLoaded] = useLoadingPlaceholder(1200);
-  const [isHomeLoaded] = useLoadingPlaceholder(1400);
-  const [isAboutLoaded] = useLoadingPlaceholder(1600);
-  const [isContactLoaded] = useLoadingPlaceholder(1800);
-  const [isLoginLoaded] = useLoadingPlaceholder(2000);
+export default function Nav () {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isLogoLoaded] = useLoadingPlaceholder(1000)
+  const [isMenuLoaded] = useLoadingPlaceholder(1200)
+  const [isHomeLoaded] = useLoadingPlaceholder(1400)
+  const [isVacanciesLoaded] = useLoadingPlaceholder(2200)
+  const [isAboutLoaded] = useLoadingPlaceholder(1600)
+  const [isContactLoaded] = useLoadingPlaceholder(1800)
+  const [isLoginLoaded] = useLoadingPlaceholder(2000)
 
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+    setIsMenuOpen(!isMenuOpen)
+  }
 
-  const handleClick = (selector) => {
-    scrollIntoView(selector);
-    toggleMenu();
-  };
+  const handleClick = selector => {
+    scrollIntoView(selector)
+    toggleMenu()
+  }
 
-  const navigateToPage = (path) => {
+  const navigateToPage = path => {
     if (location.pathname !== path) {
-      navigate(path);
+      navigate(path)
     }
-  };
+  }
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       if (
         isMenuOpen &&
         !event.target.closest('.dropdown-menu') &&
         !event.target.closest('.hamburger')
       ) {
-        setIsMenuOpen(false);
+        setIsMenuOpen(false)
       }
-    };
+    }
 
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('click', handleClickOutside)
 
     return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [isMenuOpen]);
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [isMenuOpen])
 
   return (
     <nav className='menu'>
@@ -107,6 +108,16 @@ export default function Nav() {
               <>
                 Home
                 <FaHome className='menu-icon' />
+              </>
+            )}
+          </li>
+          <li onClick={() => navigateToPage('/vacancies')}>
+            {!isVacanciesLoaded ? (
+              <div className='placeholder placeholder-text'></div>
+            ) : (
+              <>
+                Vacancies
+                <FaBriefcase className='menu-icon' />
               </>
             )}
           </li>
@@ -142,5 +153,5 @@ export default function Nav() {
         </ul>
       </div>
     </nav>
-  );
+  )
 }
