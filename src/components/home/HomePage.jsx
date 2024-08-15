@@ -6,7 +6,7 @@ import useRenderPosts from '../../hooks/useRenderPost'
 import { formatDetails, combineAllData } from '../../utils/functions'
 
 // dynamic data
-import pdfUrls from '../../assets/pdfs/pdfUrls.json'
+import pdfMetadata from '../../assets/pdf_images/metadata.json'
 import minopexData from '../../assets/private/minopex.json'
 import sayouthData from '../../assets/private/SA-Youth.json'
 import propersonnelData from '../../assets/private/Pro-Personnel.json'
@@ -36,7 +36,7 @@ export default function HomePage () {
 
   // All data combined for pagination
   const allData = combineAllData(
-    pdfUrls,
+    pdfMetadata,
     minopexData,
     sayouthData,
     propersonnelData,
@@ -72,7 +72,7 @@ export default function HomePage () {
           return (
             <PdfPosts
               key={item.id}
-              pdfFile={item.url}
+              pdfImages={item.pdfImages}
               isLoaded={isPdfContainerLoaded}
             />
           )

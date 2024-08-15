@@ -22,8 +22,8 @@
 }
 
 .slide-image {
-  max-width: 100%;
-  max-height: 400px;
+  max-width: 80%;
+  max-height: 100px;
   display: block;
   border-radius: 10px;
   object-fit: contain; /* Preserve image quality */
@@ -32,7 +32,8 @@
 }
 
 .slider-message {
-  margin-top: 10px;
+  margin-top: 20px;
+  word-break: nromal;
   font-size: 18px;
   color: #333;
 }
@@ -92,15 +93,15 @@
     max-width: 100%;
   }
 
-  .slide-image {
+  /* .slide-image {
     max-height: 300px;
-  }
+  } */
 }
 
 @media (max-width: 480px) {
-  .slide-image {
+  /* .slide-image {
     max-height: 200px;
-  }
+  } */
 
   .vacancies-button {
     font-size: 14px;

@@ -6,20 +6,26 @@ import './PdfPosts.css'
 /**
  * Component to render a PDF post.
  *
- * @description This component displays a PDF viewer or a placeholder based on the `isLoaded` prop. If `isLoaded` is true, it renders the `PDFViewerIframe` with the provided `pdfFile`. If `isLoaded` is false, it shows a placeholder indicating that the PDF is still loading.
+ * @description This component handles the display of a PDF document within a post. It conditionally renders 
+ * a PDF viewer using an iframe or a loading placeholder based on the `isLoaded` prop. When the PDF is fully loaded, 
+ * indicated by `isLoaded` being true, the `PDFViewerIframe` component is displayed, rendering the PDF pages 
+ * as images passed through the `pdfImages` prop. If the PDF is still loading (`isLoaded` is false), 
+ * a placeholder is shown to indicate the loading state.
  *
  * @param {Object} props - The component props.
- * @param {string} props.pdfFile - The URL or path of the PDF file to be displayed.
- * @param {boolean} props.isLoaded - A boolean indicating whether the PDF has finished loading. If true, the PDF viewer is displayed; otherwise, a placeholder is shown.
+ * @param {Array} props.pdfImages - An array of images representing the pages of the PDF to be displayed in the viewer.
+ * @param {boolean} props.isLoaded - A boolean that determines the display state. 
+ * If true, the PDF viewer with the PDF pages is shown; if false, a loading placeholder is displayed instead.
  * 
- * @returns {JSX.Element} A section element containing either the PDF viewer or a loading placeholder.
+ * @returns {JSX.Element} A section element containing either the PDF viewer or a loading placeholder, 
+ * based on the loading state of the PDF.
  */
-function PdfPosts({ pdfFile, isLoaded }) {
+function PdfPosts({ pdfImages, isLoaded }) {
   return (
-    <section id='pdf-posts'>
+    <section className='pdf-post'>
       {isLoaded ? (
         <div className='pdf-container'>
-          <PDFViewerIframe file={pdfFile} />
+          <PDFViewerIframe pdfImages={pdfImages} />
         </div>
       ) : (
         <div className='placeholder pdf-container-placeholder'></div>
@@ -29,7 +35,7 @@ function PdfPosts({ pdfFile, isLoaded }) {
 }
 
 PdfPosts.propTypes = {
-  pdfFile: PropTypes.string.isRequired,
+  pdfImages: PropTypes.array.isRequired,
   isLoaded: PropTypes.bool.isRequired,
 }
 

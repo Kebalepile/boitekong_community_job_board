@@ -44,13 +44,13 @@ export default function Home() {
                 className='slide-image'
               />
               <p className='slider-message'>
-                {/* Optionally, add a message or caption */}
+               Companies & Entities Job Posts
               </p>
             </>
           ) : (
             <div className='placeholder loading-placeholder'></div>
           )}
-          <div className='dots-container'>
+          {/* <div className='dots-container'>
             {images.map((_, index) => (
               <span
                 key={index}
@@ -58,7 +58,7 @@ export default function Home() {
                 onClick={() => goToSlide(index)}
               ></span>
             ))}
-          </div>
+          </div> */}
           <button className='vacancies-button' onClick={navigateToVacancies}>
             View Vacancies
           </button>

@@ -1,42 +1,9 @@
-/* Container for the PDF viewer */
 .pdf-viewer-container {
-  height: inherit;
-  /* margin: 20px auto; */
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  grid-template-rows: auto 1fr auto;
-  grid-template-areas: "p p b" "p p p" "p p p";
-}
-.pdf-viewer-container-placeholder {
- 
-  margin: 20px auto;
-  width: 300px;
-  height:inherit;
-  max-height: 500px;
+  position: relative;
+  overflow: auto;
+  height: 100%;
 }
 
-/* Placeholder Styling for Loading State */
-.placeholder {
-  background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
-  background-size: 200% 100%;
-  border-radius: 4px;
-  animation: loading 1.5s infinite;
-}
-
-/* Style for the iframe */
-.pdf-viewer-iframe {
-  grid-area: p;
-  width: inherit;
-  height: inherit;
-  border: none;
-}
-
-/* Hide scrollbars in WebKit browsers (e.g., Chrome, Safari) */
-.pdf-viewer-iframe::-webkit-scrollbar {
-  display: none;
-}
-
-/* Full view adjustments */
 .full-view {
   height: 100vh;
   width: 100vw;
@@ -47,47 +14,23 @@
   z-index: 1000;
 }
 
-/* Button to toggle between min and full view */
+.min-view {
+  height: 500px;
+  width: 300px;
+}
+
+.pdf-viewer-canvas {
+  display: block;
+  margin: 0 auto;
+}
+
+.pdf-controls {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1001;
+}
+
 .toggle-view-btn {
-  grid-area: b;
-  align-self: start;
-  justify-self: end;
-  padding: 5px 10px;
-  cursor: pointer;
-  background-color: #00a2ff;
-  color: #fff;
-  border: none;
-  border-radius: 0px 0px 0px 5px;
-  height: 40px;
-  width: 120px;
-}
-
-.full-view .toggle-view-btn {
-  z-index: 999; /* Adjust the z-index for the full-view mode */
-}
-
-.min-view  .toggle-view-btn{
-  z-index: 999; /* Higher z-index for minimized view */
-}
-
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .pdf-viewer-iframe {
-    width: 100%;
-  }
-
-  .toggle-view-btn {
-    padding: 5px 8px;
-  }
-}
-
-/* Loading Animation */
-@keyframes loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
+  margin-left: 10px;
 }

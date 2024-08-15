@@ -82,7 +82,7 @@ export const formatDetails = contentArray => {
 * It then combines all the valid mapped data into a single array. The method supports different types of data,
 * including PDF URLs and blog posts from multiple sources, and assigns a unique `type` and `id` to each item.
 *
-* @param {Object} pdfUrls - An object containing an array of PDF URLs.
+* @param {Object} pdfMetadata - An object containing an array of PDF metadata object.
 * @param {Object} minopexData - An object containing an array of blog posts from the Minopex source.
 * @param {Object} sayouthData - An object containing an array of blog posts from the SA Youth source.
 * @param {Object} propersonnelData - An object containing an array of blog posts from the Pro Personnel source.
@@ -92,13 +92,13 @@ export const formatDetails = contentArray => {
 * @returns {Array} A combined array of data objects, each with a `type` and `id` property, 
 * representing either a PDF or a blog post from various sources.
 */
-export function combineAllData(pdfUrls, minopexData, sayouthData, propersonnelData, govPagePublicData, govPagePrivateData) {
+export function combineAllData(pdfMetadata, minopexData, sayouthData, propersonnelData, govPagePublicData, govPagePrivateData) {
  return [
-   ...(pdfUrls.pdfUrls.length > 0
-     ? pdfUrls.pdfUrls.map((pdfUrl, index) => ({
+   ...(pdfMetadata.length > 0
+     ? pdfMetadata.map((metadata, index) => ({
          type: 'pdf',
          id: `pdf-${index}`,
-         url: pdfUrl,
+         pdfImages: metadata.images,
        }))
      : []),
 

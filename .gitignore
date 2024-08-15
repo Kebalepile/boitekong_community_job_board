@@ -12,7 +12,7 @@ node_modules
 venv
 webdrivers
 dist
-
+poppler-windows-24.07.0-0
 dist-ssr
 *.local
 .env

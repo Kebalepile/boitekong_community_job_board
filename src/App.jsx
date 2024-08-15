@@ -5,7 +5,6 @@ import './App.css'
 
 const Home = lazy(() => import('./components/home/Home'))
 const Vacancies = lazy(() => import('./components/home/HomePage'))
-const Opportunity = lazy(() => import('./components/board/Opportunity'))
 const NotFound = lazy(() => import('./components/redirect/NotFound'))
 
 function App () {
@@ -29,15 +28,8 @@ function App () {
             </Layout>
           }
         />
-        <Route
-          path='/post_information'
-          element={
-            <Layout>
-              <Opportunity />
-            </Layout>
-          }
-        />
-        <Route path='*' element={<NotFound />} />
+       
+        {/* <Route path='*' element={<NotFound />} /> */}
       </Routes>
     </BrowserRouter>
   )
