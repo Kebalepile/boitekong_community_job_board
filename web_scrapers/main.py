@@ -8,8 +8,9 @@ import time
 import logging
 
 
-from rename_imgs_and_generate_json import rename_images_and_create_json
-# from rename_pdfs_and_generate_json import rename_pdfs_and_create_json
+# from utils.rename_imgs_and_generate_json import rename_images_and_create_json
+# from utils.rename_pdfs_and_generate_json import rename_pdfs_and_create_json
+from utils.pdf_to_image import create_images_from_pdf_pages
 
 def main():
     logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]: %(message)s', datefmt='%d %B %Y %H:%M:%S')
@@ -41,8 +42,9 @@ def main():
         # rainbow_bot = Rainbow_Bot()
         # rainbow_bot.run()
 
-        rename_images_and_create_json()
+        # rename_images_and_create_json()
         # rename_pdfs_and_create_json()
+        create_images_from_pdf_pages()
     except Exception as e:
         logging.error(f"An error occurred while initiating bots: {e}")
 
