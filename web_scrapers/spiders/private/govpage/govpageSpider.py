@@ -5,21 +5,19 @@ import time
 import logging
 import os
 import json
-from typing import List
+from typing import List, Optional, Dict
 from datetime import datetime
 from selenium import webdriver
 from pipeline.writer import GovPageFile
 from selenium.webdriver.common.by import By
-
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
-# Use relative imports to import Links and BlogPost from types.py
 from ...types.types import Links, BlogPost
+
 # Initialize global variables
-govPageLinks: dict = Links()
-# Rename Departments to Businesses
-govPageLinks["businesses"] = govPageLinks.pop("departments")
+govPageLinks: Dict[str, dict] = Links()  # Ensure this is initialized properly
+govPageLinks["businesses"] = {}
 
 class Spider:
     Name = "govpage-private-sector"
@@ -33,12 +31,12 @@ class Spider:
         opt = webdriver.FirefoxOptions()
         opt.add_argument("--headless")  # Enable headless for production
         self.driver = webdriver.Firefox(options=opt)
-        # Set the window size to 768x1024 (tablet size)
         self.driver.set_window_size(768, 1024)
 
-        # Load previous state if exists
+        # Initialize scraper state
         self.state_file = 'state.json'
-        self.load_state()
+        govPageLinks["businesses"] = {}
+        self.current_business_index = 0
 
     def save_progress(self):
         """Save the current state of the scraper to a file."""
@@ -50,19 +48,8 @@ class Spider:
             json.dump(state, f)
 
     def save_data(self):
-          GovPageFile(blogpost,"govpage-private-sector")
-
-
-    def load_state(self):
-        """Load the previous state of the scraper from a file."""
-        if os.path.exists(self.state_file):
-            with open(self.state_file, 'r') as f:
-                state = json.load(f)
-                global govPageLinks
-                govPageLinks = state['govPageLinks']
-                self.current_business_index = state['current_business_index']
-        else:
-            self.current_business_index = 0
+        """Save the current state data."""
+        GovPageFile(govPageLinks, "govpage-private-sector")
 
     def launch(self):
         """Launch the scraper."""
@@ -75,7 +62,7 @@ class Spider:
         menu.click()
 
         menuOptions: List[WebElement] = self.driver.find_elements(By.CSS_SELECTOR, "ul li.wsite-menu-item-wrap a.wsite-menu-item")
-        url: (str | None) = self.AllowedDomains[1]
+        url: Optional[str] = self.AllowedDomains[1]
 
         for o in menuOptions:
             if "govpage" in o.text.lower():
@@ -100,7 +87,7 @@ class Spider:
 
             elems: List[WebElement] = self.driver.find_elements(By.CSS_SELECTOR, selector)
 
-            vacanciesLink: (str | None) = None
+            vacanciesLink: Optional[str] = None
 
             for e in elems:
                 text: str = e.text.lower()
@@ -121,7 +108,6 @@ class Spider:
             else:
                 self.close()
 
-
     def privateSector(self, url: str):
         """Scrape the private sector vacancies."""
         self.driver.get(url)
@@ -140,7 +126,7 @@ class Spider:
         log.info(f"{self.Name} scraping vacancy updates page links...")
 
         if len(elems) > 0:
-            privateSectorURL: (str|None) = None
+            privateSectorURL: Optional[str] = None
             for e in elems:
                 text: str = e.text.lower().lstrip()
                 href: str = e.get_attribute("href")
@@ -221,49 +207,25 @@ class Spider:
             blogPost["title"] = text
             blogPost["href"] = href
             blogPost["postedDate"] = date
-            blogPost["uuid"] = "p" + str(uuid.uuid4())
+            blogPost["uuid"] = "gov-" + str(uuid.uuid4())
 
-            elems = self.driver.find_elements(By.CSS_SELECTOR, ".blog-content > .paragraph")
-            if len(elems):
-                for e in elems:
-                    text = e.text
-                    content = blogPost["content"]
-                    content.append(text)
-                    blogPost["content"] = content
-            else:
-                src = self.driver.execute_script("""
-                        const src = Array.from(document.getElementsByTagName('iframe')).filter(f =>{
-                        
-                            if (f.src.includes("drive.google")){
-                                return f
-                            }
-                                        
-                        }).map(f => f.src);
-                        return src[0];
-                    """)
-                blogPost["iframe"] = src
             return blogPost
-        return "no blog post found"
 
-    def close(self):
-        """Close the browser and log a message."""
-        log.warning(f"{self.Name}, Sorry, No Government Job Posts for today")
-        self.driver.close()
-
-    def Weekday(self) -> str:
-        """Return the current weekday."""
-        current_date = datetime.now()
-        day_of_week_name = current_date.strftime("%A")
-        return day_of_week_name.lower()
+    def Emma(self, t: int):
+        """Delay function."""
+        time.sleep(t)
 
     def Date(self) -> str:
-        """Return the current date in a specific format."""
-        date = datetime.now()
-        return date.strftime("%d %B %Y")
+        """Get today's date in YYYY-MM-DD format."""
+        return str(datetime.today().strftime('%Y-%m-%d'))
 
-    def Emma(self, seconds: float):
-        """Sleep for a specified number of seconds."""
-        time.sleep(seconds)
+    def Weekday(self) -> str:
+        """Get the current weekday."""
+        return str(datetime.today().strftime('%A'))
+
+    def close(self):
+        """Close the browser."""
+        self.driver.close()
 
 # Create a custom formatter for log messages
 log_formatter = logging.Formatter("%(asctime)s [%(levelname)s]: %(message)s", datefmt="%d %B %Y %H:%M:%S")

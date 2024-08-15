@@ -1,5 +1,5 @@
 # from spiders.public.govpage.govpageSpider import Spider as PublicSpider
-from spiders.private.govpage.govpageSpider import Spider as PrivateSpider
+# from spiders.private.govpage.govpageSpider import Spider as PrivateSpider
 from bots.entities.national.national_credit_regulator.Bot import Bot as NCR_Bot
 from  bots.entities.national.community_schemes_ombud_services.Bot import Bot as CSOS_Bot
 from bots.entities.national.postbank.Bot import Bot as Postbank_Bot
@@ -23,9 +23,9 @@ def main():
         # logging.info("Pausing for 10 seconds")
         # time.sleep(10)  # pause for 10s
 
-        logging.info("Starting Private Spider")
-        govpage_private_spider = PrivateSpider()
-        govpage_private_spider.launch()
+        # logging.info("Starting Private Spider")
+        # govpage_private_spider = PrivateSpider()
+        # govpage_private_spider.launch()
 
         logging.info("Starting Bots")
         nrc_bot = NCR_Bot()
