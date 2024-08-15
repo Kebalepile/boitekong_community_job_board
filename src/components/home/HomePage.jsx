@@ -67,7 +67,7 @@ export default function HomePage() {
   }
 
   return (
-    <div>
+    <div id="posts">
       {paginatedData.map(item => {
         if (item.type === 'pdf') {
           return (
