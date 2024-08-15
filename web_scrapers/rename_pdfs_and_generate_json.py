@@ -1,8 +1,28 @@
 import os
 import json
 
-
 def rename_pdfs_and_create_json(directory="./database/pdfs"):
+    """
+    Renames PDF files in the specified directory to a numerical sequence and creates a JSON file containing the PDF URLs.
+
+    This function will:
+    1. List all PDF files in the specified directory.
+    2. Sort the files alphabetically to ensure consistent renaming.
+    3. Rename each PDF file to a sequential numeric name (e.g., '1.pdf', '2.pdf').
+    4. Generate a list of the new PDF paths and save them in a JSON file.
+
+    Args:
+        directory (str): The directory where the PDF files are located. Defaults to "./database/pdfs".
+
+    Returns:
+        None
+
+    Outputs:
+        A JSON file named 'pdfUrls.json' will be created in the specified directory, containing the new URLs of the renamed PDF files.
+    
+    Prints:
+        The function prints the number of PDF files that were renamed and confirms the creation of the 'pdfUrls.json' file.
+    """
     # List all PDF files in the directory
     pdf_files = [f for f in os.listdir(directory) if f.endswith('.pdf')]
 
@@ -31,9 +51,3 @@ def rename_pdfs_and_create_json(directory="./database/pdfs"):
         json.dump(json_data, json_file, indent=4)
 
     print(f"Renamed {len(pdf_files)} PDF files and created pdfUrls.json")
-
-# # Define the directory containing the PDF files
-# pdf_directory = "./database/pdfs"
-
-# # Run the function
-# rename_pdfs_and_create_json(pdf_directory)
