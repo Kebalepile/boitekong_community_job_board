@@ -97,10 +97,12 @@
   background-color: #007bff; /* Blue background */
   color: white; /* White text */
   border: none;
-  padding: 8px 16px;
   border-radius: 4px;
+  padding: 0.5rem 1rem;
   cursor: pointer;
+  font-size: 0.9rem;
   text-align: center;
+  font-size: 0.9rem;
 }
 
 .read-more-button:hover {

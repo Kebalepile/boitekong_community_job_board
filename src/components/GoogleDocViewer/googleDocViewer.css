@@ -1,0 +1,61 @@
+.google-doc-viewer {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+  overflow: hidden;
+  margin: 1rem 0;
+}
+
+.google-doc-viewer.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 0;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.google-doc-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Styles when not in full-screen mode */
+.toggle-fullscreen {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  z-index: 10000;
+}
+
+/* Styles when in full-screen mode */
+.google-doc-viewer.fullscreen .toggle-fullscreen {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(16, 17, 17, 0.918);
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  z-index: 10000;
+  margin: 0;
+  height: 50px;
+}

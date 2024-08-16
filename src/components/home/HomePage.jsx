@@ -36,12 +36,14 @@ export default function HomePage () {
 
   // All data combined for pagination
   const allData = combineAllData(
-    pdfMetadata,
+    // pdfMetadata,
+    [],
+   
+    govPagePublicData,
     minopexData,
     sayouthData,
-    propersonnelData,
-    govPagePublicData,
-    govPagePrivateData
+    govPagePrivateData,
+    propersonnelData
   )
 
   // Total pages based on combined data
@@ -65,8 +67,10 @@ export default function HomePage () {
     setSelectedPost(null)
   }
 
+
   return (
     <div id='posts'>
+      
       {paginatedData.map(item => {
         if (item.type === 'pdf') {
           return (
