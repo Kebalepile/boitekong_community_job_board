@@ -10,7 +10,7 @@ import govPagePublicData from '../../assets/public/govpage-public-sector.json'
 import govPagePrivateData from '../../assets/public/govpage-private-sector.json'
 import './home.css'
 
-const POSTS_PER_PAGE = 6
+const POSTS_PER_PAGE = 10
 
 /**
  * HomePage component is the main page that displays a list of posts with pagination.
@@ -18,7 +18,7 @@ const POSTS_PER_PAGE = 6
  *
  * @component
  */
-export default function HomePage() {
+export default function HomePage () {
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedPost, setSelectedPost] = useState(null)
 
@@ -54,7 +54,7 @@ export default function HomePage() {
    * Handles page change for the pagination component.
    * @param {number} pageNumber - The number of the page to navigate to.
    */
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = pageNumber => {
     setCurrentPage(pageNumber)
   }
 
@@ -62,7 +62,7 @@ export default function HomePage() {
    * Handles the click event on a post item to display the modal.
    * @param {object} post - The selected post data.
    */
-  const handlePostClick = (post) => {
+  const handlePostClick = post => {
     setSelectedPost(post)
   }
 
@@ -75,10 +75,7 @@ export default function HomePage() {
 
   return (
     <div>
-      <Posts
-        paginatedData={paginatedData}
-        onPostClick={handlePostClick}
-      />
+      <Posts paginatedData={paginatedData} onPostClick={handlePostClick} />
 
       <Pagination
         currentPage={currentPage}
@@ -87,19 +84,19 @@ export default function HomePage() {
       />
 
       {selectedPost && (
-        <div className="modal" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <span className="close" onClick={handleCloseModal}>
+        <div className='modal' onClick={handleCloseModal}>
+          <div className='modal-content' onClick={e => e.stopPropagation()}>
+            <span className='close' onClick={handleCloseModal}>
               &times;
             </span>
-            <div className="modal-body">
+            <div className='modal-body'>
               <img
                 src={selectedPost.imgSrc || selectedPost.iconLink}
-                alt="company logo"
+                alt='company logo'
               />
               <h2>{selectedPost.title || selectedPost.jobTitle}</h2>
               <div
-                className="details"
+                className='details'
                 dangerouslySetInnerHTML={{
                   __html: selectedPost?.details
                     ? selectedPost.details
@@ -109,9 +106,9 @@ export default function HomePage() {
               {selectedPost.apply && (
                 <a
                   href={selectedPost?.apply}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="apply"
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='apply'
                 >
                   Apply
                 </a>
@@ -119,9 +116,9 @@ export default function HomePage() {
               {selectedPost.href && (
                 <a
                   href={selectedPost?.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="source-btn"
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='source-btn'
                 >
                   Original Source
                 </a>
