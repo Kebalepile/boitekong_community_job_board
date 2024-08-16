@@ -1,8 +1,8 @@
 .pdf-viewer-container {
   position: relative;
   overflow: hidden;
-  height: inherit;
-  width: inherit;
+  height: 100%;
+  width: 100%;
 }
 
 .full-view {
@@ -34,47 +34,26 @@
   color: white;
 }
 
-.full-view-btn,
-.minimize-view-btn {
-  padding: 10px 20px;
-  background-color: #00a2ff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.minimize-view-btn {
-  width: 80px;
-}
-.zoom {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-.zoom button {
-  width: 50px;
-  border-radius: 4px;
-  border: none;
-  color: white;
-  background-color: #00a2ff;
-  font-size: larger;
-}
+.zoom,
 .pdf-pagination {
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
   gap: 10px;
 }
-.pdf-pagination button {
+
+.pdf-pagination button,
+.zoom button {
+  background-color: #00a2ff;
+  color: white;
   border: none;
   border-radius: 4px;
-  height: 25px;
+  padding: 5px 10px;
+  cursor: pointer;
 }
+
 .pdf-viewer-canvas {
-  grid-area: canvas;
   cursor: pointer;
   display: block;
-  margin: 50px auto;
+  margin: auto;
 }
 
 @media (max-width: 768px) {
