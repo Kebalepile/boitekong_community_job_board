@@ -1,40 +1,37 @@
 import React, { useState, useEffect } from 'react'
-import PdfPosts from '../pdf/PdfPosts'
 import Pagination from '../pagination/Pagination'
-import useLoadingPlaceholder from '../../hooks/useLoadingPlaceholder'
-import useRenderPosts from '../../hooks/useRenderPost'
-import { formatDetails, combineAllData } from '../../utils/functions'
-
-// dynamic data
+import Posts from '../posts/Posts'
+import { combineAllData, formatDetails } from '../../utils/functions'
 import pdfMetadata from '../../assets/pdf_images/metadata.json'
 import minopexData from '../../assets/private/minopex.json'
 import sayouthData from '../../assets/private/SA-Youth.json'
 import propersonnelData from '../../assets/private/Pro-Personnel.json'
 import govPagePublicData from '../../assets/public/govpage-public-sector.json'
 import govPagePrivateData from '../../assets/public/govpage-private-sector.json'
-
 import './home.css'
-import './posts.css'
 
-// Constants
 const POSTS_PER_PAGE = 6
 
-export default function HomePage () {
+/**
+ * HomePage component is the main page that displays a list of posts with pagination.
+ * It manages the current page state, handles post clicks to open a modal, and removes the apply link from the modal if necessary.
+ *
+ * @component
+ */
+export default function HomePage() {
   const [currentPage, setCurrentPage] = useState(1)
-  const [isPdfContainerLoaded] = useLoadingPlaceholder(5000)
   const [selectedPost, setSelectedPost] = useState(null)
 
   useEffect(() => {
-    // Check if the modal is visible
     if (selectedPost) {
       const applyLink = document.querySelector('.modal a.btn.btn-primary')
       if (applyLink) {
-        applyLink.remove() // Remove the apply link
+        applyLink.remove()
       }
     }
   }, [selectedPost])
 
-  // All data combined for pagination
+  // Combine all data from different sources
   const allData = combineAllData(
     pdfMetadata,
     govPagePublicData,
@@ -44,7 +41,7 @@ export default function HomePage () {
     propersonnelData
   )
 
-  // Total pages based on combined data
+  // Calculate the total number of pages based on the combined data
   const totalPages = Math.ceil(allData.length / POSTS_PER_PAGE)
 
   // Get the posts for the current page
@@ -53,35 +50,35 @@ export default function HomePage () {
     currentPage * POSTS_PER_PAGE
   )
 
-  const handlePageChange = pageNumber => {
+  /**
+   * Handles page change for the pagination component.
+   * @param {number} pageNumber - The number of the page to navigate to.
+   */
+  const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber)
   }
 
-  const handlePostClick = post => {
+  /**
+   * Handles the click event on a post item to display the modal.
+   * @param {object} post - The selected post data.
+   */
+  const handlePostClick = (post) => {
     setSelectedPost(post)
   }
 
+  /**
+   * Closes the modal by setting the selectedPost state to null.
+   */
   const handleCloseModal = () => {
     setSelectedPost(null)
   }
 
   return (
-    <div id='posts'>
-      {paginatedData.map(item => {
-        if (item.type === 'pdf') {
-          return (
-            <PdfPosts
-              key={item.id}
-              pdfImages={item.pdfImages}
-              isLoaded={isPdfContainerLoaded}
-            />
-          )
-        } else {
-          return (
-            <PostItem key={item.id} post={item} onPostClick={handlePostClick} />
-          )
-        }
-      })}
+    <div>
+      <Posts
+        paginatedData={paginatedData}
+        onPostClick={handlePostClick}
+      />
 
       <Pagination
         currentPage={currentPage}
@@ -89,22 +86,20 @@ export default function HomePage () {
         onPageChange={handlePageChange}
       />
 
-      {/* Modal */}
       {selectedPost && (
-        <div className='modal' onClick={handleCloseModal}>
-          <div className='modal-content' onClick={e => e.stopPropagation()}>
-            <span className='close' onClick={handleCloseModal}>
+        <div className="modal" onClick={handleCloseModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <span className="close" onClick={handleCloseModal}>
               &times;
             </span>
-            <div className='modal-body'>
+            <div className="modal-body">
               <img
                 src={selectedPost.imgSrc || selectedPost.iconLink}
-                alt='company logo'
+                alt="company logo"
               />
               <h2>{selectedPost.title || selectedPost.jobTitle}</h2>
-
               <div
-                className='details'
+                className="details"
                 dangerouslySetInnerHTML={{
                   __html: selectedPost?.details
                     ? selectedPost.details
@@ -114,9 +109,9 @@ export default function HomePage () {
               {selectedPost.apply && (
                 <a
                   href={selectedPost?.apply}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='apply'
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="apply"
                 >
                   Apply
                 </a>
@@ -124,9 +119,9 @@ export default function HomePage () {
               {selectedPost.href && (
                 <a
                   href={selectedPost?.href}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='source-btn'
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="source-btn"
                 >
                   Original Source
                 </a>
@@ -137,13 +132,4 @@ export default function HomePage () {
       )}
     </div>
   )
-}
-
-/**
- * @description Acts as a wrapper method of useRenderPosts hook
- * @param {object} param
- * @returns Post element card with summrized info
- */
-function PostItem ({ post, onPostClick }) {
-  return useRenderPosts([post], onPostClick)
 }
