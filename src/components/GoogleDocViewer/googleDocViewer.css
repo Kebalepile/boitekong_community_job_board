@@ -39,7 +39,7 @@
   padding: 0.5rem 1rem;
   cursor: pointer;
   font-size: 0.9rem;
-  z-index: 10000;
+  /* z-index: 10000; */
 }
 
 /* Styles when in full-screen mode */
