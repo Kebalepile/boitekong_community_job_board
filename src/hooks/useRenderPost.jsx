@@ -1,5 +1,6 @@
-import React from "react";
-import GoogleDocViewer from "../components/GoogleDocViewer/GoogleDocViewer";
+import React from 'react';
+import PropTypes from 'prop-types';
+import GoogleDocViewer from '../components/GoogleDocViewer/GoogleDocViewer';
 
 /**
  * Custom hook to render a list of job posts.
@@ -8,7 +9,7 @@ import GoogleDocViewer from "../components/GoogleDocViewer/GoogleDocViewer";
  *
  * @param {Array<Object>} posts - An array of post objects to be rendered. Each object should contain properties like `imgSrc`, `iconLink`, `title`, `jobTitle`, `details`, `content`, or `iframe`.
  * @param {function} onClick - A function to handle the click event on a post. This function will be called with the post object as its argument when the "read more" button or article is clicked.
- * 
+ *
  * @returns {JSX.Element} A memoized section element containing the rendered list of job posts, or an empty fragment if the posts array is empty.
  */
 function useRenderPosts(posts, onClick) {
@@ -16,6 +17,29 @@ function useRenderPosts(posts, onClick) {
     if (posts.length === 0) {
       return <></>;
     }
+
+    /**
+     * Summary Component
+     *
+     * @description Renders a div containing HTML content passed as a prop. 
+     * This component is used to display summary content of job posts.
+     *
+     * @param {Object} props - The component props.
+     * @param {string} props.innerHTML - The HTML content to be rendered inside
+     *  the summary div.
+     * 
+     * @returns {JSX.Element} A div with the HTML content.
+     */
+    const Summary = ({ innerHTML }) => (
+      <div
+        className="summary"
+        dangerouslySetInnerHTML={{ __html: innerHTML }}
+      />
+    );
+
+    Summary.propTypes = {
+      innerHTML: PropTypes.string.isRequired,
+    };
 
     return (
       <section>
@@ -32,16 +56,15 @@ function useRenderPosts(posts, onClick) {
             ) : null}
             <p className="title">{p?.title || p?.jobTitle}</p>
             {p?.content?.length > 0 ? (
-              <div
-                className="summary"
-                dangerouslySetInnerHTML={{ __html: p?.details || p?.content }}
-              />
+              <Summary innerHTML={p.content} />
+            ) : p?.details?.length > 0 ? (
+              <Summary innerHTML={p.details} />
             ) : p?.iframe ? (
               <GoogleDocViewer iframeUrls={p.iframe} />
             ) : null}
             {!p?.iframe && (
               <button className="read-more-button" onClick={() => onClick(p)}>
-                Full Screen
+                Read More
               </button>
             )}
           </article>
