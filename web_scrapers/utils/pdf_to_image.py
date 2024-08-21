@@ -61,9 +61,10 @@ def create_images_from_pdf_pages(pdf_folder='./database/pdfs',
                 'images': image_paths
             })
 
-    # Save metadata to JSON
+    # Save metadata to JSON, replacing it if it already exists
     with open(json_file_path, 'w') as json_file:
         json.dump(metadata, json_file, indent=4)
     
     print(f"Metadata saved to: {json_file_path}")
     print("Processing completed.")
+

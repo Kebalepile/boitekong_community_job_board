@@ -75,7 +75,7 @@ export const formatDetails = contentArray => {
   return ""; // Return an empty string if contentArray is not valid
 };
 
- /**
+/**
 * Combines and processes multiple data sources into a single array.
 *
 * @description This method checks each data source to ensure it contains data before mapping over it.
@@ -92,54 +92,61 @@ export const formatDetails = contentArray => {
 * @returns {Array} A combined array of data objects, each with a `type` and `id` property, 
 * representing either a PDF or a blog post from various sources.
 */
-export function combineAllData(pdfMetadata, minopexData, sayouthData, propersonnelData, govPagePublicData, govPagePrivateData) {
- return [
-   ...(pdfMetadata.length > 0
-     ? pdfMetadata.map((metadata, index) => ({
-         type: 'pdf',
-         id: `pdf-${index}`,
-         pdfImages: metadata.images,
-       }))
-     : []),
+export function combineAllData(
+  pdfMetadata,
+  minopexData,
+  sayouthData,
+  propersonnelData,
+  govPagePublicData,
+  govPagePrivateData
+) {
+  return [
+    ...(govPagePublicData.blogPosts.length > 0
+      ? govPagePublicData.blogPosts.map((post, index) => ({
+          ...post,
+          type: "post",
+          id: `govpublic-${index}`
+        }))
+      : []),
+      
+    ...(minopexData.blogPosts.length > 0
+      ? minopexData.blogPosts.map((post, index) => ({
+          ...post,
+          type: "post",
+          id: `minopex-${index}`
+        }))
+      : []),
 
-   ...(minopexData.blogPosts.length > 0
-     ? minopexData.blogPosts.map((post, index) => ({
-         ...post,
-         type: 'post',
-         id: `minopex-${index}`,
-       }))
-     : []),
+    ...(pdfMetadata.length > 0
+      ? pdfMetadata.map((metadata, index) => ({
+          type: "pdf",
+          id: `pdf-${index}`,
+          pdfImages: metadata.images
+        }))
+      : []),
 
-   ...(sayouthData.blogPosts.length > 0
-     ? sayouthData.blogPosts.map((post, index) => ({
-         ...post,
-         type: 'post',
-         id: `sayouth-${index}`,
-       }))
-     : []),
+    ...(sayouthData.blogPosts.length > 0
+      ? sayouthData.blogPosts.map((post, index) => ({
+          ...post,
+          type: "post",
+          id: `sayouth-${index}`
+        }))
+      : []),
 
-   ...(propersonnelData.blogPosts.length > 0
-     ? propersonnelData.blogPosts.map((post, index) => ({
-         ...post,
-         type: 'post',
-         id: `propersonnel-${index}`,
-       }))
-     : []),
+    ...(govPagePrivateData.blogPosts.length > 0
+      ? govPagePrivateData.blogPosts.map((post, index) => ({
+          ...post,
+          type: "post",
+          id: `govprivate-${index}`
+        }))
+      : []),
 
-   ...(govPagePublicData.blogPosts.length > 0
-     ? govPagePublicData.blogPosts.map((post, index) => ({
-         ...post,
-         type: 'post',
-         id: `govpublic-${index}`,
-       }))
-     : []),
-
-   ...(govPagePrivateData.blogPosts.length > 0
-     ? govPagePrivateData.blogPosts.map((post, index) => ({
-         ...post,
-         type: 'post',
-         id: `govprivate-${index}`,
-       }))
-     : []),
- ];
+    ...(propersonnelData.blogPosts.length > 0
+      ? propersonnelData.blogPosts.map((post, index) => ({
+          ...post,
+          type: "post",
+          id: `propersonnel-${index}`
+        }))
+      : [])
+  ];
 }
