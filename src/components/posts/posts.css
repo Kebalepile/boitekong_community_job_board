@@ -1,4 +1,8 @@
 /* Modal Styles */
+.modal-content> .modal-content, .modal.fade, #applypop {
+  display: none;
+}
+
 .modal {
   display: block;
   position: fixed;

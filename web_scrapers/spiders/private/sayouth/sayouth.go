@@ -69,7 +69,7 @@ func (s *Spider) login(ctx context.Context) {
 
 	variables := s.env()
 	// document.querySelector("#toggle-navbar-menu")
-	navigateToLoginPage := fmt.Sprintf(`
+	navigateToLoginPage := `
 			const loginSaYouth = () => {
 				const button = document.querySelector("#toggle-navbar-menu");
 			
@@ -101,9 +101,9 @@ func (s *Spider) login(ctx context.Context) {
 			};
 			
 			loginSaYouth();		
-		`)
+		`
 
-	loginToSAYouthAcc := fmt.Sprintf(`
+	loginToSAYouthAcc := `
 		const loginButton = document.querySelector("#Navbar_bottom > yth-stack > yth-button:nth-child(2)").shadowRoot.querySelector("button");
 		if (loginButton) {
 			loginButton.scrollIntoView({ behavior: "auto", block: "center" });
@@ -111,7 +111,7 @@ func (s *Spider) login(ctx context.Context) {
 		} else {
 			console.error("Login button not found.");
 		}
-	`)
+	`
 	err := chromedp.Run(ctx,
 		chromedp.Sleep(20*time.Second),
 		chromedp.WaitVisible("#toggle-navbar-menu"),
@@ -137,11 +137,11 @@ func (s *Spider) login(ctx context.Context) {
 func (s *Spider) jobPosts(ctx context.Context) {
 	log.Println(s.Name, "login successful !!!")
 
-	jsExpression := fmt.Sprintf(`
+	jsExpression := `
 		const searchButton = document.querySelector("body > div > div.page-wrapper.flex-grow-1.hpt-0.has-nav-tab > nav > div > ul > li:nth-child(2) > a");
 		searchButton.scrollIntoView({ behavior: "auto", block: "center" });
 		searchButton.click();
-	 `)
+	 `
 	// css seector for the app navigation bar
 	selector := ".app-nav"
 	// download site icon image & naviaege to job search page
@@ -178,55 +178,53 @@ func (s *Spider) jobPosts(ctx context.Context) {
 func (s *Spider) crawl(ctx context.Context) {
 
 	log.Println(s.Name, "scraping job posts")
-
+	/*
+	Summary:
+	- This loop traverses pages of the pagination until disabled pagination element is found.
+	- It appends blog posts retrieved from each page into s.Posts.BlogPosts.
+	- The pagination button is clicked through JS, and the loop continues until 'n' reaches 2.
+	*/
 	n := 1
-	for n < 2 {
+	for n < 2 {  // Loop will traverse pagination until there is no more traversing forward
 		posts := s.Posts.BlogPosts
 		s.Posts.BlogPosts = append(posts, s.pagination(ctx)...)
+	
+		jsExpression := `(( ) => {
+			let paginationElement = document.querySelector(".pagination");
 
-		jsExpression := fmt.Sprintf(`(( ) => {
-			let i = Array.from(document.querySelectorAll(".pagination > .page-item"));
-			
-			i = i[i.length - 1];
-			i.querySelector(".page-link").click();
-			
-			return i.classList.length;
-		})()`)
+			if (paginationElement) {
+				paginationElement.scrollIntoView();  // Scroll the pagination element into view
+			}
 
+			let items = Array.from(document.querySelectorAll(".pagination > .page-item"));
+			let lastItem = items[items.length - 1];  // Get the last pagination button
+
+			if (!lastItem.classList.contains("disabled")) {
+				lastItem.querySelector(".page-link").click();  // Click to load the next page
+			}
+
+			return lastItem.classList.length;  // Return length to determine pagination status (active or diabled)
+
+		})()`
+	
 		err := chromedp.Run(ctx,
-			chromedp.Sleep(10*time.Second),
-			chromedp.Evaluate(jsExpression, &n))
-		s.error(err)
-
+			chromedp.Sleep(10*time.Second),  // Wait for 10 seconds to let the page load
+			chromedp.Evaluate(jsExpression, &n))  // Evaluate the JS to click and update n
+		s.error(err)  // Handle potential errors
 	}
+	
 	// get more info for each job post
 	for i, p := range s.Posts.BlogPosts {
 
-		jsExpression := fmt.Sprintf(`(() => {
-
-			const removeElement = (selector) => {
-				const card = document.querySelector(".card-detail");
-				if (card) {
-
-					const elem = card.querySelector(selector);
-					if (elem){
-						elem.remove();
-					}
-				}
-				
-			};
-
-			removeElement(".card-detail-cta.opportunity");
-			removeElement("div.row.hmt-5");
-
-			const card = document.querySelector(".card-detail");
+		jsExpression := `(() => {
+			const card = document.querySelector(".content.hpt-5");
 			if (card){
 				return card.innerHTML;
 			}else{
 				return "<h2>The opportunity that you are looking for is closed</h1>";
 			}
 			
-		})()`)
+		})()`
 
 		err := chromedp.Run(ctx,
 			chromedp.Navigate(p.Apply),
@@ -242,6 +240,7 @@ func (s *Spider) crawl(ctx context.Context) {
 }
 
 // get all job post components & scrape needed data from them
+// i.e summery innerHTML & href link to the full job post details
 func (s *Spider) pagination(ctx context.Context) (posts []types.SaYouthPost) {
 
 	jsExpression := fmt.Sprintf(`(() => {
@@ -251,14 +250,14 @@ func (s *Spider) pagination(ctx context.Context) (posts []types.SaYouthPost) {
 		if(element){
 			element.scrollIntoView({ behavior: "auto", block: "center" });
 		}
-
-		const posts = Array.from(document.querySelectorAll(".CardsContainer > .card.card-blue"));
+		const container = document.querySelectorAll(".CardsContainer");
+		const posts = Array.from(container[0].children);
 
 		return posts.map(p =>{
 			const data  = {
 				iconLink:"%s",
-				summary:  p.querySelector('.opportunity').innerHTML,
-				apply: p.querySelector("#btnReadMoreSearch").shadowRoot.querySelector("a").href
+				summary:  p.innerHTML,
+				apply: p.querySelector("#btnReadMoreSearch").href
 			};
 			
 			return data;

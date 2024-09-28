@@ -95,9 +95,9 @@ export const formatDetails = contentArray => {
 export function combineAllData(
   pdfMetadata,
   minopexData,
+  govPagePublicData,
   sayouthData,
   propersonnelData,
-  govPagePublicData,
   govPagePrivateData
 ) {
   return [

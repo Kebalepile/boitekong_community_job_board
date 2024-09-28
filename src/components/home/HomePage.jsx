@@ -34,11 +34,11 @@ export default function HomePage () {
   // Combine all data from different sources
   const allData = combineAllData(
     pdfMetadata,
-    govPagePublicData,
     minopexData,
+    govPagePublicData,
     sayouthData,
-    govPagePrivateData,
-    propersonnelData
+    propersonnelData,
+    govPagePrivateData
   )
 
   // Calculate the total number of pages based on the combined data

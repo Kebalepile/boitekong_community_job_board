@@ -16,9 +16,9 @@ def main():
     logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s]: %(message)s', datefmt='%d %B %Y %H:%M:%S')
 
     try:
-        # logging.info("Starting Public Spider")
-        # govpage_spider = PublicSpider()
-        # govpage_spider.launch()
+        logging.info("Starting Public Spider")
+        govpage_spider = PublicSpider()
+        govpage_spider.launch()
 
 
         # logging.info("Pausing for 10 seconds")
@@ -43,8 +43,8 @@ def main():
         # rainbow_bot.run()
 
         rename_images_and_create_json()
-        rename_pdfs_and_create_json()
-        create_images_from_pdf_pages()
+        # rename_pdfs_and_create_json()
+        # create_images_from_pdf_pages()
     except Exception as e:
         logging.error(f"An error occurred while initiating bots: {e}")
 
