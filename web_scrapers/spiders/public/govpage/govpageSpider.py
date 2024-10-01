@@ -10,6 +10,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import MoveTargetOutOfBoundsException
 
 # Assuming Links and BlogPost classes are defined somewhere else in your project
 from spiders.types.types import Links, BlogPost
@@ -46,6 +48,7 @@ class Spider:
     def save_data(self):
         GovPageFile(self.govPageLinks, "govpage-public-sector")
 
+    
     def launch(self):
         log.info(f"{self.Name} spider has Launched")
         self.driver.get(self.AllowedDomains[0])
@@ -53,7 +56,13 @@ class Spider:
 
         try:
             menu = self.driver.find_element(By.CSS_SELECTOR, "*[aria-label='Menu']")
-            menu.click()
+            try:
+                menu.click()  # Try clicking the menu
+            except Exception as click_error:
+                # Log the error but continue
+                log.warning(f"Could not click element with attribute '*[aria-label=\"Menu\"]'")
+
+            # Proceed with menu options and other logic even if click fails
             menu_options = self.driver.find_elements(By.CSS_SELECTOR, "ul li.wsite-menu-item-wrap a.wsite-menu-item")
 
             url = self.AllowedDomains[1]
@@ -70,7 +79,15 @@ class Spider:
                 selector = ".blog-title-link"
                 elems = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, selector)))
 
-                self.driver.execute_script("document.querySelector('.blog-title-link').scrollIntoView({behavior: 'smooth'})")
+                # Attempt to scroll to the element
+                try:
+                    elem_to_scroll = self.driver.find_element(By.CSS_SELECTOR, ".blog-title-link")
+                    actions = ActionChains(self.driver)
+                    actions.move_to_element(elem_to_scroll).perform()  # Scroll the page to the element
+                except MoveTargetOutOfBoundsException as e:
+                    log.warning(f"Could not scroll to element with class '.blog-title-link'")  # Log the scroll failure
+
+                # Proceed with the rest of the logic even if scrolling fails
                 elems = self.driver.find_elements(By.CSS_SELECTOR, selector)
 
                 vacancies_link = None
@@ -94,6 +111,8 @@ class Spider:
         except Exception as e:
             log.error(f"Error during launch: {str(e)}")
             self.close()
+
+
 
     def scrape_departments(self, url: str):
         self.driver.get(url)
